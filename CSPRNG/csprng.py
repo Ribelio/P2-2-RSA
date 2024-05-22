@@ -2,7 +2,7 @@ import os
 import hashlib
 
 # https://docs.python.org/3/library/hashlib.html
-# Notes: For experiments, could use hashlib's different sha methods like sha256() or sha3_384() (dunno what it would do tho)
+# Notes: For experiments, could use hashlib's different sha methods like sha256() or sha3_384() (dunno what it would do)
 #                         could use different byte lengths
 
 class CSPRNG:
@@ -10,7 +10,7 @@ class CSPRNG:
         self.byte_length = byte_length
         self.seed = self.generate_seed()
     
-    # Returns 32 random bytes from the operating system random number generator. Useful when we want to compare different os
+    # Returns 32 random bytes from the operating system random number generator. Useful when we want to compare os
     def generate_seed(self):
         """
         Generates an initial seed with os prng
@@ -29,8 +29,9 @@ class CSPRNG:
         """
         hmac = hashlib.sha256()
         hmac.update(self.seed)
-        self.seed = hmac.digest() # update the self.seed so that next number is different 
-        return self.seed[:n] # we truncate the seed here because sha256 makes hmac.digest() return 32 bytes and we might not always wwant that
+        self.seed = hmac.digest()  # update the self.seed so that next number is different
+        return self.seed[:n]
+        # we truncate the seed here because sha256 makes hmac.digest() return 32 bytes and we might not always want that
     
     def rand_int(self, lower, upper):
         """
