@@ -16,9 +16,9 @@ else:
 
 msg = 'you should commit sewer side'
 msg_byt = msg.encode('utf-8')  # convert to bytes; alternatively add b before str
-ciphertext = rsa.encrypt(public_key, msg_byt)
-print(f'Ciphertext: {ciphertext}')
+enc_msg = rsa.encrypt(public_key, msg_byt)
+print(f'Encrypted message: {enc_msg}')
 
-dec_msg_byt = rsa.decrypt(private_key, ciphertext)
+dec_msg_byt = rsa.decrypt(private_key, enc_msg)
 dec_msg = dec_msg_byt.decode('utf-8')  # convert back
 print(f'Decrypted message: {dec_msg}')
