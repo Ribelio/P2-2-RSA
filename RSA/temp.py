@@ -100,24 +100,3 @@ def decrypt_message(privatekey, ciphertext1):
         )
     )
     return plaintext
-
-
-# Example usage
-if __name__ == "__main__":
-    # Initialize custom CSPRNG
-    csprng = CSPRNG(32)
-
-    # Generate RSA keys
-    privatekey, publickey = generate_rsa_keypair(csprng)
-    save_keys_to_files(privatekey, publickey)
-
-    # Load keys (this step is just to demonstrate loading; in real usage, keys should already be loaded)
-    privatekey, publickey = load_keys_from_files()
-
-    # Encrypt and decrypt a message
-    message1 = b'Hello, this is a secret message!'
-    ciphertext1 = encrypt_message(publickey, message1)
-    print(f'Ciphertext: {ciphertext1}')
-
-    decrypted_message1 = decrypt_message(privatekey, ciphertext1)
-    print(f'Decrypted message: {decrypted_message1}')
