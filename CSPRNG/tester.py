@@ -1,12 +1,7 @@
 import platform
 import subprocess
 import os
-
-try:
-    import csprng
-except ModuleNotFoundError:
-    subprocess.check_call(['pip', 'install', 'csprng'])
-    import csprng
+import csprng
 
 try:
     import numpy as np
