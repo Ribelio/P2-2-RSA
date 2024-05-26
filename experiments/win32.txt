@@ -1,0 +1,6 @@
+OS: Windows
+Bits: ('32bit', 'WindowsPE')
+CPU: 12th Gen Intel(R) Core(TM) i7-12700H
+Architecture: X86_32
+Threads: 6
+Memory: 4096 MB
