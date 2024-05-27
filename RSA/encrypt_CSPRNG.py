@@ -3,7 +3,7 @@ import rsa_CSRPNG
 from pathlib import Path
 
 def encrypt_CSPRNG(message):
-    csprng = CSPRNG(32)  # initialize custom CSPRNG
+    csprng = csprng.CSPRNG(32)  # initialize custom CSPRNG
 
     # generate RSA keys
     if not (Path.cwd() / 'private_key_temp.pem').exists() or not (Path.cwd() / 'public_key_temp.pem').exists():
@@ -44,3 +44,7 @@ with open('input.txt', 'r') as file:
 
     decrypted_message1 = rsa_CSRPNG.decrypt_message(privatekey, ciphertext1)
     print(f'Decrypted message: {decrypted_message1}')
+    
+    #Write the output to a file
+    with open('output.bin', 'wb') as f:
+        f.write(ciphertext1)

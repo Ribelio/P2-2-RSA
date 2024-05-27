@@ -17,7 +17,9 @@ import java.io.InputStreamReader;
 import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
+import java.awt.GridLayout;
+import java.math.BigInteger;
+import javax.swing.JTextArea;
 
 
 public class GUI {
@@ -44,12 +46,16 @@ public class GUI {
 
         JTextField input = new JTextField("Input");
         input.setPreferredSize(new Dimension(500,20));
-/*         JTextField output = new JTextField("Output");
+        JTextArea output = new JTextArea("Output");
+        output.setLineWrap(true);
+        output.setWrapStyleWord(true);
+        output.setEditable(false);
         output.setPreferredSize(new Dimension(500,20));
- */
+
+        panel.setLayout(new GridLayout(4, 1)); // Set panel layout to GridLayout with 4 rows and 1 column
         panel.add(instructions);
         panel.add(input);
-        // panel.add(output);
+        panel.add(output);
         panel.add(button);
         frame.add(panel);
         frame.setVisible(true);
@@ -59,13 +65,11 @@ public class GUI {
             button.setEnabled(false);
             String inpuString = input.getText();
             pythonScript(inpuString);
-            /* try {
-                byte[] bytes;
-                bytes = Files.readAllBytes(Paths.get("output.bin"));
-                String outputString = new String(bytes);
+            try {
+                byte[] bytes = Files.readAllBytes(Paths.get("output.bin"));
+                String outputString = new BigInteger(1, bytes).toString(16);
                 output.setText(outputString);
             } catch (IOException e1) {}
- */
 /*             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
