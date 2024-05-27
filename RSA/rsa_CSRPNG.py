@@ -1,8 +1,23 @@
-from CSPRNG.csprng import CSPRNG
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import serialization, hashes
-from sympy import isprime, nextprime
-from cryptography.hazmat.primitives.asymmetric import rsa
+from csprng import CSPRNG
+
+try:
+    from cryptography.hazmat.primitives.asymmetric import padding
+    from cryptography.hazmat.primitives import serialization, hashes
+    from sympy import isprime, nextprime
+    from cryptography.hazmat.primitives.asymmetric import rsa
+except ImportError as e:
+    print("Error importing required modules:", e)
+    print("Please make sure to install the necessary packages.")
+    print("You can install the required packages by running the following command:")
+    print("pip install cryptography sympy")
+
+    # You can uncomment the following lines to automatically install the packages
+    import subprocess
+    subprocess.call(['pip', 'install', 'cryptography', 'sympy'])
+    from cryptography.hazmat.primitives.asymmetric import padding
+    from cryptography.hazmat.primitives import serialization, hashes
+    from sympy import isprime, nextprime
+    from cryptography.hazmat.primitives.asymmetric import rsa
 
 
 def generate_prime_candidate(length, random):

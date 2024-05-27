@@ -6,17 +6,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import java.io.BufferedReader; // Import the BufferedReader class
+import java.io.InputStreamReader;
+import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 
 public class GUI {
 
     public GUI() {
-        JFrame frame = new JFrame("Temp");
+        JFrame frame = new JFrame("RSA Encryption/Decryption");
         frame.setSize(600, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
@@ -25,9 +32,41 @@ public class GUI {
 
         JButton button = new JButton("ENCRYPT");
         button.setFocusable(false);
-        button.addActionListener(new ActionListener() {
+        
 
-            @Override
+        JLabel instructions = new JLabel("<html><div style='text-align: center;'>Add whatever text you would like encrypted in the left text-box and click the button to receive a beautifully ciphered message in the right text-box!</div></html>");
+        instructions.setFont(new Font("Arial", Font.PLAIN, 14));
+        instructions.setPreferredSize(new Dimension(570, 50)); // Set preferred size
+        instructions.setVerticalAlignment(JLabel.TOP);
+        instructions.setHorizontalAlignment(JLabel.CENTER);
+        instructions.setVerticalTextPosition(JLabel.TOP);
+        instructions.setHorizontalTextPosition(JLabel.CENTER);
+
+        JTextField input = new JTextField("Input");
+        input.setPreferredSize(new Dimension(500,20));
+/*         JTextField output = new JTextField("Output");
+        output.setPreferredSize(new Dimension(500,20));
+ */
+        panel.add(instructions);
+        panel.add(input);
+        // panel.add(output);
+        panel.add(button);
+        frame.add(panel);
+        frame.setVisible(true);
+
+        button.addActionListener(e -> {
+            button.setText("Done!");
+            button.setEnabled(false);
+            String inpuString = input.getText();
+            pythonScript(inpuString);
+            /* try {
+                byte[] bytes;
+                bytes = Files.readAllBytes(Paths.get("output.bin"));
+                String outputString = new String(bytes);
+                output.setText(outputString);
+            } catch (IOException e1) {}
+ */
+/*             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
                     String pythonScriptPath = "RSA/testtemp.py";
@@ -45,30 +84,56 @@ public class GUI {
                 } catch(IOException | InterruptedException ex){
                     ex.printStackTrace();
                 }
-            }
-
+            } */
         });
 
-        JLabel instructions = new JLabel("<html><div style='text-align: center;'>Add whatever text you would like encrypted in the top text-box and click the button to receive a beautifully ciphered message in the bottom text-box!</div></html>");
-        instructions.setFont(new Font("Arial", Font.PLAIN, 14));
-        instructions.setPreferredSize(new Dimension(570, 50)); // Set preferred size
-        instructions.setVerticalAlignment(JLabel.TOP);
-        instructions.setHorizontalAlignment(JLabel.CENTER);
-        instructions.setVerticalTextPosition(JLabel.TOP);
-        instructions.setHorizontalTextPosition(JLabel.CENTER);
+    }
+    
+    
+    
+    private void pythonScript(String inputString) {
+        try {
+            Files.write(Paths.get("input.txt"), inputString.getBytes());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String pythonScriptPath = "RSA/encrypt_CSPRNG.py";
+        ProcessBuilder processBuilder = new ProcessBuilder(
+            "python", 
+            pythonScriptPath);
+        Process process;
+        
+        try {
+            process = processBuilder.start();
 
-        JTextField input = new JTextField("Input");
-        input.setPreferredSize(new Dimension(500,20));
-        JTextField output = new JTextField("Output");
-        output.setPreferredSize(new Dimension(500,20));
+            // Capture error output
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line;
+            while ((line = errorReader.readLine()) != null) {
+                System.out.println(line);
+            }
 
+            // Capture the output from the Python script
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
 
-        panel.add(instructions);
-        panel.add(input);
-        panel.add(output);
-        panel.add(button);
-        frame.add(panel);
-        frame.setVisible(true);
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Python script executed successfully");
+            } else {
+                System.out.println("Error executing Python script, exit code: " + exitCode);
+            }
+            
+            } catch(IOException e) {
+                System.out.println("Error reading from the error stream");
+                e.printStackTrace();
+            } catch(InterruptedException e) {
+                System.out.println("Error waiting for the process to finish");
+                e.printStackTrace();
+            }
     }
 
     public static void main(String[] args) {
