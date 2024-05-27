@@ -3,7 +3,7 @@ from RSA import rsa
 from pathlib import Path  # good for file checking shenanigans
 
 
-csprng = CSPRNG(32)  # Unused so far, might need generated prime numbers
+csprng = CSPRNG(32)  # unused so far, might need generated prime numbers
 csprng.rand_int(0, 100)
 
 # print((Path.cwd() / 'private_key.pem').exists(), (Path.cwd() / 'public_key.pem').exists())

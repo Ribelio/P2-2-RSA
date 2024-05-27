@@ -6,16 +6,13 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 
 
 def generate_prime_candidate(length, random):
-    """ Generate an odd integer randomly """
-    p = random.rand_int(2 ** (length - 1), 2 ** length - 1)
-    return p | 1  # Ensure the number is odd
+    p = random.rand_int(2 ** (length - 1), 2 ** length - 1) # odd int
+    return p | 1  # ensure int is odd
 
 
-def generate_prime_number(length, random):
-    """ Generate a prime number of `length` bits """
+def generate_prime_number(length, random): # generate a prime number of `length` bits
     p = 4
-    # Keep generating while the number is not prime
-    while not isprime(p):
+    while not isprime(p):  # keep generating while the number is not prime
         p = generate_prime_candidate(length, random)
     return p
 
@@ -26,10 +23,10 @@ def generate_rsa_keypair(random, key_size=2048):
 
     n = p * q
     phi = (p - 1) * (q - 1)
-    e = 65537  # Commonly used prime exponent
-    d = pow(e, -1, phi)  # Modular inverse
+    e = 65537  # commonly used prime exponent
+    d = pow(e, -1, phi)  # modular inverse
 
-    # Create private and public key objects
+    # create private and public key objects
     privatekey = rsa.RSAPrivateNumbers(
         p=p,
         q=q,
@@ -44,7 +41,7 @@ def generate_rsa_keypair(random, key_size=2048):
     return privatekey, publickey
 
 
-# Save keys to files
+# save keys to files
 def save_keys_to_files(privatekey, publickey):
     pem_private_key = privatekey.private_bytes(
         encoding=serialization.Encoding.PEM,
@@ -62,7 +59,7 @@ def save_keys_to_files(privatekey, publickey):
         f.write(pem_public_key)
 
 
-# Load keys from files
+# load keys from files
 def load_keys_from_files():
     with open('private_key_temp.pem', 'rb') as f:
         privatekey = serialization.load_pem_private_key(
@@ -76,7 +73,7 @@ def load_keys_from_files():
     return privatekey, publickey
 
 
-# Encrypt a message
+# encrypt a message
 def encrypt_message(publickey, message1):
     ciphertext1 = publickey.encrypt(
         message1,
@@ -89,7 +86,7 @@ def encrypt_message(publickey, message1):
     return ciphertext1
 
 
-# Decrypt a message
+# decrypt a message
 def decrypt_message(privatekey, ciphertext1):
     plaintext = privatekey.decrypt(
         ciphertext1,
