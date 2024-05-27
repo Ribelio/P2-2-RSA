@@ -1,0 +1,5 @@
+OS: Linux
+Bits: ('64bit', 'ELF')
+CPU: Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz
+Architecture: X86_64
+Threads: 8

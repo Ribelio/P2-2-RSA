@@ -1,0 +1,5 @@
+OS: Windows
+Bits: ('64bit', 'WindowsPE')
+CPU: Intel(R) Core(TM) i5-1035G7 CPU @ 1.20GHz
+Architecture: X86_64
+Threads: 8
