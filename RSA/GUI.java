@@ -49,7 +49,7 @@ public class GUI {
 
         });
 
-        JLabel instructions = new JLabel("<html><div style='text-align: center;'>Add whatever text you would like encrypted in the left text-box and click the button to receive a beautifully ciphered message in the right text-box!</div></html>");
+        JLabel instructions = new JLabel("<html><div style='text-align: center;'>Add whatever text you would like encrypted in the top text-box and click the button to receive a beautifully ciphered message in the bottom text-box!</div></html>");
         instructions.setFont(new Font("Arial", Font.PLAIN, 14));
         instructions.setPreferredSize(new Dimension(570, 50)); // Set preferred size
         instructions.setVerticalAlignment(JLabel.TOP);
