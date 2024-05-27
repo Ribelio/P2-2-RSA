@@ -1,6 +1,8 @@
+
+
 # CSPRNG Flask API
 
-This Flask API provides cryptographically secure pseudorandom number generation (CSPRNG) through a simple HTTP interface. The API generates random numbers using OS-specific CSPRNG mechanisms and can be easily extended or integrated into various applications.
+Instruction for our API documentation, this Flask API provides cryptographically secure pseudorandom number generation (CSPRNG) through a simple HTTP interface. The API generates random numbers using OS-specific CSPRNG mechanisms and can be easily extended or integrated into various applications. The project can also be run in Java with either `RSA\GUI.java` or `CSPRNG\RNGUI.java`.
 
 ## Table of Contents
 
@@ -25,7 +27,7 @@ This Flask API provides cryptographically secure pseudorandom number generation 
 1. **Clone the repository**:
 
     ```bash
-    git clone https://github.com/yourusername/csprng-flask-api.git
+    git clone REPO
     cd csprng-flask-api
     ```
 
@@ -49,4 +51,4 @@ This Flask API provides cryptographically secure pseudorandom number generation 
 To start the Flask API, simply run:
 
 ```bash
-python app.py
+python CSPRNG\\API_connection.py.py
