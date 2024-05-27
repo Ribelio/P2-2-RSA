@@ -1,12 +1,7 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.io.BufferedReader; // Import the BufferedReader class
 import java.io.InputStreamReader;
-import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.awt.GridLayout;

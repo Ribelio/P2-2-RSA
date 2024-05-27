@@ -10,6 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 
 public class RNGUI {
 
@@ -42,6 +45,14 @@ public class RNGUI {
                         String pythonScriptPath = "CSPRNG/tester.py";
                         ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath);
                         Process process = processBuilder.start();
+
+                        // Capture error output
+                        BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                        String line;
+                        while ((line = errorReader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+
 
                         int exitCode = process.waitFor();
                         if (exitCode == 0) {

@@ -11,7 +11,7 @@ except ModuleNotFoundError:
 
 try:
     import pandas as pd
-except ModuleNotFoundError:
+except (ModuleNotFoundError, ImportError):
     subprocess.check_call(['pip', 'install', 'pandas'])
     import pandas as pd
 
