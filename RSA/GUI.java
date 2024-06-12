@@ -7,11 +7,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.io.BufferedReader; // Import the BufferedReader class
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.awt.GridLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.math.BigInteger;
 import javax.swing.JTextArea;
 
@@ -40,6 +46,29 @@ public class GUI {
 
         JTextField input = new JTextField("Input");
         input.setPreferredSize(new Dimension(500,20));
+        input.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            // This method will be called whenever the text changes
+            private void textChanged() {
+                button.setText("ENCRYPT");
+                button.setEnabled(true);
+            }
+        });
+
         JTextArea output = new JTextArea("Output");
         output.setLineWrap(true);
         output.setWrapStyleWord(true);
