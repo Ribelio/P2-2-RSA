@@ -1,9 +1,9 @@
-from CSPRNG.csprng import CSPRNG
+from RSA.csprng import CSPRNG
 from RSA import rsa
 from pathlib import Path  # good for file checking shenanigans
 
 
-csprng = CSPRNG(32)  # unused so far, might need generated prime numbers
+csprng = CSPRNG(32)  # Unused so far, might need generated prime numbers
 csprng.rand_int(0, 100)
 
 # print((Path.cwd() / 'private_key.pem').exists(), (Path.cwd() / 'public_key.pem').exists())
@@ -22,4 +22,3 @@ print(f'Encrypted message: {enc_msg}')
 dec_msg_byt = rsa.decrypt(private_key, enc_msg)
 dec_msg = dec_msg_byt.decode('utf-8')  # convert back
 print(f'Decrypted message: {dec_msg}')
-

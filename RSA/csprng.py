@@ -49,5 +49,5 @@ class CSPRNG:
         return lower + (rand_int % range)
 
 
-csprng = CSPRNG(32)
-print(csprng.rand_int(0, 100))
+# csprng = CSPRNG(32)
+# print(csprng.rand_int(0, 100))

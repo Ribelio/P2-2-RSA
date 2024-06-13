@@ -1,7 +1,12 @@
 import platform
 import subprocess
 import os
-import csprng
+
+try:
+    import RSA.csprng as csprng
+except ModuleNotFoundError:
+    subprocess.check_call(['pip', 'install', 'csprng'])
+    import RSA.csprng as csprng
 
 try:
     import numpy as np
@@ -11,7 +16,7 @@ except ModuleNotFoundError:
 
 try:
     import pandas as pd
-except (ModuleNotFoundError, ImportError):
+except ModuleNotFoundError:
     subprocess.check_call(['pip', 'install', 'pandas'])
     import pandas as pd
 
