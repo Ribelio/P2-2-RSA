@@ -1,12 +1,7 @@
 import platform
 import subprocess
 import os
-
-try:
-    import RSA.csprng as csprng
-except ModuleNotFoundError:
-    subprocess.check_call(['pip', 'install', 'csprng'])
-    import RSA.csprng as csprng
+import csprng
 
 try:
     import numpy as np
