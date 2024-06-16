@@ -1,4 +1,4 @@
-import csprng_copy 
+import Decrypt.decrypt_csprng as decrypt_csprng 
 import base64
 
 try:
@@ -127,7 +127,7 @@ def save_encryption_info(ciphertext, publickey):
         f.write(f"Public Exponent (e):\n{e}\n\n")
         f.write(f"Public Key PEM:\n{publickey.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo).decode('utf-8')}\n")
 
-random = csprng_copy.CSPRNG(32)
+random = decrypt_csprng.CSPRNG(32)
 message = b"Generate free robux."
 
 privatekey, publickey = generate_rsa_keypair(random)
