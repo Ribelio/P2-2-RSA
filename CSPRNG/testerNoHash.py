@@ -1,12 +1,7 @@
 import platform
 import subprocess
 import os
-
-try:
-    import csprngNoHash
-except ModuleNotFoundError:
-    subprocess.check_call(['pip', 'install', 'csprng'])
-    import csprngNoHash
+import csprngNoHash
 
 try:
     import numpy as np
