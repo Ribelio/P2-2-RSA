@@ -33,8 +33,8 @@ def generate_prime_number(length, random): # generate a prime number of `length`
 
 
 def generate_rsa_keypair(random, key_size=2048):
-    p = generate_prime_number(key_size // 2, random)
-    q = generate_prime_number(key_size // 2, random)
+    p = 21 #generate_prime_number(key_size // 2, random)
+    q = 17 #generate_prime_number(key_size // 2, random)
 
     n = p * q
     phi = (p - 1) * (q - 1)

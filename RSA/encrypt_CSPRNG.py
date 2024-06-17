@@ -6,12 +6,12 @@ def encrypt_CSPRNG(message):
     csprng = csprng.CSPRNG(32)  # initialize custom CSPRNG
 
     # generate RSA keys
-    if not (Path.cwd() / 'private_key_temp.pem').exists() or not (Path.cwd() / 'public_key_temp.pem').exists():
-        privatekey, publickey = rsa_CSRPNG.generate_rsa_keypair(csprng)
-        rsa_CSRPNG.save_keys_to_files(privatekey, publickey)
-    else:
-        # load keys: this step is just to demonstrate loading. in real usage, keys should already be loaded
-        privatekey, publickey = rsa_CSRPNG.load_keys_from_files()
+    #if not (Path.cwd() / 'private_key_temp.pem').exists() or not (Path.cwd() / 'public_key_temp.pem').exists():
+    privatekey, publickey = rsa_CSRPNG.generate_rsa_keypair(csprng)
+    rsa_CSRPNG.save_keys_to_files(privatekey, publickey)
+    # else:
+    #     # load keys: this step is just to demonstrate loading. in real usage, keys should already be loaded
+    #     privatekey, publickey = rsa_CSRPNG.load_keys_from_files()
 
     # encrypt and decrypt a message
     message1 = message.encode('utf-8')
