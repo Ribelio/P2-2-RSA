@@ -2,15 +2,25 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import java.io.BufferedReader; // Import the BufferedReader class
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,8 +31,12 @@ import java.awt.event.FocusListener;
 import java.math.BigInteger;
 import javax.swing.JTextArea;
 
-
 public class GUI {
+
+    private String message;
+    private BigInteger public_key;
+    private BigInteger public_exp;
+    private String chosenAttackMode;
 
     public GUI() {
         JFrame frame = new JFrame("RSA Encryption/Decryption");
@@ -30,8 +44,30 @@ public class GUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
-        JPanel panel = new JPanel();
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
 
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setFocusable(false);
+
+        JPanel encryptPanel = new JPanel();
+        addEncryptionObjects(encryptPanel);
+        tabbedPane.addTab("Encrypt", encryptPanel);
+
+        JPanel decryptPanel = new JPanel();
+        addDecryptionComponents(decryptPanel);
+        tabbedPane.addTab("Decrypt", decryptPanel);
+
+        frame.add(tabbedPane);
+        frame.setVisible(true);
+    
+    }
+
+
+    public void addEncryptionObjects(JPanel panel) {
         JButton button = new JButton("ENCRYPT");
         button.setFocusable(false);
         
@@ -75,13 +111,11 @@ public class GUI {
         output.setEditable(false);
         output.setPreferredSize(new Dimension(500,20));
 
-        panel.setLayout(new GridLayout(4, 1)); // Set panel layout to GridLayout with 4 rows and 1 column
+        panel.setLayout(new GridLayout(4, 1)); 
         panel.add(instructions);
         panel.add(input);
         panel.add(output);
         panel.add(button);
-        frame.add(panel);
-        frame.setVisible(true);
 
         button.addActionListener(e -> {
             button.setText("Done!");
@@ -93,31 +127,216 @@ public class GUI {
                 String outputString = new BigInteger(1, bytes).toString(16);
                 output.setText(outputString);
             } catch (IOException e1) {}
-/*             @Override
-            public void actionPerformed(ActionEvent e) {
-                try{
-                    String pythonScriptPath = "RSA/testtemp.py";
-                    ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath);
-                    Process process = processBuilder.start();
+        });
+    }
 
-                    int exitCode = process.waitFor();
-                    if (exitCode == 0) {
-                        System.out.println("Python script executed successfully");
-                        button.setText("Done!");
-                        button.setEnabled(false);
-                    } else {
-                        System.out.println("Error executing Python script, exit code: " + exitCode);
-                    }
-                } catch(IOException | InterruptedException ex){
-                    ex.printStackTrace();
-                }
-            } */
+    private void addDecryptionComponents(JPanel panel) {
+        JLabel instructions = new JLabel("<html><div style='text-align: center;'>Add the encrypted text, public key, and public exponent. Then click the button to decrypt it!</div></html>");
+        instructions.setFont(new Font("Arial", Font.PLAIN, 14));
+        instructions.setPreferredSize(new Dimension(570, 50));
+        instructions.setVerticalAlignment(JLabel.TOP);
+        instructions.setHorizontalAlignment(JLabel.CENTER);
+        instructions.setVerticalTextPosition(JLabel.TOP);
+        instructions.setHorizontalTextPosition(JLabel.CENTER);
+
+        JButton button = new JButton("DECRYPT");
+        button.setFocusable(false);
+
+        JTextField input = new JTextField("Encrypted Message");
+        input.setPreferredSize(new Dimension(500, 20));
+        input.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            // This method will be called whenever the text changes
+            private void textChanged() {
+                button.setText("DECRYPT");
+                button.setEnabled(true);
+            }
         });
 
+        JTextField input2 = new JTextField("Public Key");
+        input2.setPreferredSize(new Dimension(500, 20));
+        input2.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            // This method will be called whenever the text changes
+            private void textChanged() {
+                button.setText("DECRYPT");
+                button.setEnabled(true);
+            }
+        });
+
+        JTextField input3 = new JTextField("Public Exponent");
+        input3.setPreferredSize(new Dimension(500, 20));
+        input3.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                textChanged();
+            }
+
+            // This method will be called whenever the text changes
+            private void textChanged() {
+                button.setText("DECRYPT");
+                button.setEnabled(true);
+            }
+        });
+
+        JTextArea output = new JTextArea("Output");
+        output.setLineWrap(true);
+        output.setWrapStyleWord(true);
+        output.setEditable(false);
+        output.setPreferredSize(new Dimension(500, 20));
+
+
+        JRadioButton bruteforceButton = new JRadioButton("Bruteforce Attack");
+        bruteforceButton.setFocusable(false);
+        bruteforceButton.setSelected(true);
+        JRadioButton mathematicalButton = new JRadioButton("Mathematical Attack");
+        mathematicalButton.setFocusable(false);
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(bruteforceButton);
+        group.add(mathematicalButton);
+   
+        JPanel radioButtonsPanel = new JPanel();
+        radioButtonsPanel.add(bruteforceButton);
+        radioButtonsPanel.add(mathematicalButton);
+
+        panel.setLayout(new GridLayout(7, 1));
+        panel.add(instructions);
+        panel.add(input);
+        panel.add(input2);
+        panel.add(input3);
+        panel.add(radioButtonsPanel);   
+        panel.add(output);
+        panel.add(button);
+
+        button.addActionListener(e -> {
+            button.setText("Done!");
+            button.setEnabled(false);
+
+            message = input.getText();
+            try {
+                public_key = new BigInteger(input2.getText());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Public key is not a number", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+            try {
+                public_exp = new BigInteger(input3.getText());
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Public exponent is not a number", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+            if (bruteforceButton.isSelected() == true) {
+                chosenAttackMode = "bruteforce";
+            } else {
+                chosenAttackMode = "mathematical";
+            };
+            
+            String fileName = "encrypted_text_info.txt";
+
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+                writer.write("Encrypted Text (Base64):\n");
+                writer.write(message + "\n\n"); 
+                writer.write("Public Key (n):\n");
+                writer.write(public_key + "\n\n"); 
+                writer.write("Public Exponent (e):\n");
+                writer.write(public_exp + "\n\n"); 
+                writer.write("Method:\n");
+                writer.write(chosenAttackMode + "\n");
+                writer.close();
+            } catch (IOException exep) {
+                exep.printStackTrace();
+            }
+
+            pythonScriptDecrypt(fileName);
+
+        });
     }
     
     
-    
+    private void pythonScriptDecrypt(String file) {
+        String pythonScriptPath;
+        if (chosenAttackMode == "bruteforce") {
+            pythonScriptPath = "Decrypt/bruteforce.py";
+        } else if (chosenAttackMode == "mathematical") {
+            pythonScriptPath = "Decrypt/mathematical.py";
+        } else {pythonScriptPath = null;};
+
+        ProcessBuilder processBuilder = new ProcessBuilder(
+            "python", 
+            pythonScriptPath);
+        Process process;
+        
+        try {
+            process = processBuilder.start();
+
+            // Capture error output
+            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            String line;
+            while ((line = errorReader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            // Capture the output from the Python script
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0) {
+                System.out.println("Python script executed successfully");
+            } else {
+                System.out.println("Error executing Python script, exit code: " + exitCode);
+            }
+            
+            } catch(IOException e) {
+                System.out.println("Error reading from the error stream");
+                e.printStackTrace();
+            } catch(InterruptedException e) {
+                System.out.println("Error waiting for the process to finish");
+                e.printStackTrace();
+            }
+    }
+
+
     private void pythonScript(String inputString) {
         try {
             Files.write(Paths.get("input.txt"), inputString.getBytes());
