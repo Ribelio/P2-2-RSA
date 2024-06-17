@@ -74,6 +74,6 @@ class Mathematical:
 # p, q = math.find_prime_factors(n)
 # print(f"p = {p} and q = {q}")
 
-math = Mathematical()
-decrypted_text = math.mathematical_decrypt('encrypted_text_info.txt')
-print(decrypted_text.decode('utf-8'))
+# math = Mathematical()
+# decrypted_text = math.mathematical_decrypt('encrypted_text_info.txt')
+# print(decrypted_text.decode('utf-8'))

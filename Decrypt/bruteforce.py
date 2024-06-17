@@ -75,6 +75,6 @@ class Bruteforce:
 # p, q = math.find_prime_factors(n)
 # print(f"p = {p} and q = {q}")
 
-brtf = Bruteforce()
-decrypted_text = brtf.bruteforce_decrypt('encrypted_text_info.txt')
-print(decrypted_text.decode('utf-8'))
+# brtf = Bruteforce()
+# decrypted_text = brtf.bruteforce_decrypt('encrypted_text_info.txt')
+# print(decrypted_text.decode('utf-8'))
