@@ -1,3 +1,4 @@
+import base64
 from csprng import CSPRNG
 
 try:
@@ -112,3 +113,17 @@ def decrypt_message(privatekey, ciphertext1):
         )
     )
     return plaintext
+
+# save rsa information in a text file
+def save_encryption_info(ciphertext, publickey):
+    public_nums = publickey.public_numbers()
+    n = public_nums.n
+    e = public_nums.e
+
+    # shamelessly admitting i formatted this part using chatgpt 
+    with open('encrypted_text_info.txt', 'w') as f:
+        f.write(f"Encrypted Text (Base64):\n{base64.b64encode(ciphertext).decode('utf-8')}\n\n")
+        f.write(f"Public Key (n):\n{n}\n\n")
+        f.write(f"Public Exponent (e):\n{e}\n\n")
+        f.write(f"Public Key PEM:\n{publickey.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo).decode('utf-8')}\n")
+
