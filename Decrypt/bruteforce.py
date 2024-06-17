@@ -6,6 +6,10 @@ import base64
 import sympy
 
 class Bruteforce:
+    """
+    This class is used for decryption attacks on RSA through bruteforcing.
+    The method attempts to find the prime numbers that make up the public key by going through every prime number. 
+    """
 
     # Step 1: Read the encrypted message information like public key and exponent
     def read_encryption_txt(self, file):

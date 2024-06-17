@@ -5,6 +5,10 @@ import base64
 import sympy
 
 class Mathematical:
+    """
+    This class is used for decryption attacks on RSA through the exploitation of the mathematics behind RSA.
+    The method attempts to factorize the public key to find its prime numbers and construct the private key. 
+    """
 
     # Step 1: Read the encrypted message information like public key and exponent
     def read_encryption_txt(self, file):
