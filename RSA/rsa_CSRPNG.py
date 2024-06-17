@@ -34,8 +34,8 @@ def generate_prime_number(length, random): # generate a prime number of `length`
 
 
 def generate_rsa_keypair(random, key_size=2048):
-    p = 21 #generate_prime_number(key_size // 2, random)
-    q = 17 #generate_prime_number(key_size // 2, random)
+    p = generate_prime_number(key_size // 2, random)
+    q = generate_prime_number(key_size // 2, random)
 
     n = p * q
     phi = (p - 1) * (q - 1)
@@ -127,3 +127,14 @@ def save_encryption_info(ciphertext, publickey):
         f.write(f"Public Exponent (e):\n{e}\n\n")
         f.write(f"Public Key PEM:\n{publickey.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo).decode('utf-8')}\n")
 
+random = CSPRNG(32)
+message = b"test"
+
+privatekey, publickey = generate_rsa_keypair(random)
+ciphertext = encrypt_message(publickey, message)
+save_keys_to_files(privatekey, publickey)
+save_encryption_info(ciphertext, publickey)
+
+loaded_privatekey, loaded_publickey = load_keys_from_files()
+plaintext = decrypt_message(loaded_privatekey, ciphertext)
+print(f"Decrypted message: {plaintext.decode('utf-8')}")
