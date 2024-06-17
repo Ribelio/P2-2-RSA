@@ -88,8 +88,7 @@ def load_keys_from_files():
         )
     return privatekey, publickey
 
-
-# encrypt a message
+# encrypt a message (good padding)
 def encrypt_message(publickey, message1):
     ciphertext1 = publickey.encrypt(
         message1,
@@ -101,8 +100,7 @@ def encrypt_message(publickey, message1):
     )
     return ciphertext1
 
-
-# decrypt a message
+# decrypt a message (good padding)
 def decrypt_message(privatekey, ciphertext1):
     plaintext = privatekey.decrypt(
         ciphertext1,
@@ -113,6 +111,22 @@ def decrypt_message(privatekey, ciphertext1):
         )
     )
     return plaintext
+
+# # encrypt a message (worse padding - use for testing bruteforce, also change key_size above and reduce msg length)
+# def encrypt_message(publickey, message1):
+#     ciphertext1 = publickey.encrypt(
+#         message1,
+#         padding.PKCS1v15()
+#     )
+#     return ciphertext1
+
+# # decrypt a message (worse padding - use for testing bruteforce, also change key_size above and reduce msg length)
+# def decrypt_message(privatekey, ciphertext1):
+#     plaintext = privatekey.decrypt(
+#         ciphertext1,
+#         padding.PKCS1v15()
+#     )
+#     return plaintext
 
 # save rsa information in a text file
 def save_encryption_info(ciphertext, publickey):
@@ -128,7 +142,7 @@ def save_encryption_info(ciphertext, publickey):
         f.write(f"Public Key PEM:\n{publickey.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo).decode('utf-8')}\n")
 
 random = decrypt_csprng.CSPRNG(32)
-message = b"Generate free robux."
+message = b"test"
 
 privatekey, publickey = generate_rsa_keypair(random)
 ciphertext = encrypt_message(publickey, message)

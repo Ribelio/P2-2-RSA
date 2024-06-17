@@ -23,7 +23,7 @@ class Bruteforce:
         return encrypted, n, e
     
     # Step 2: Bruteforece attempt to find prime numbers p and q 
-    def bruteforce_prime_factors(self, n, limit=10000):
+    def bruteforce_prime_factors(self, n, limit=1000000):
             primes = list(sympy.primerange(2, limit))
             for p, q in itertools.combinations(primes, 2):
                 if p * q == n:
