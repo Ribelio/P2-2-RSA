@@ -1,4 +1,4 @@
-import Decrypt.decrypt_csprng as decrypt_csprng 
+import decrypt_csprng as decrypt_csprng 
 import base64
 
 try:
