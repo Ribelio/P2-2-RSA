@@ -1,4 +1,5 @@
 import itertools
+import sys
 from sympy import primefactors
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
@@ -67,6 +68,21 @@ class Bruteforce:
 
 ##################################################################################################
 
-brtf = Bruteforce()
-decrypted_text = brtf.bruteforce_decrypt('encrypted_text_info.txt')
-print(decrypted_text.decode('utf-8'))
+if __name__ == "__main__":
+    brtf = Bruteforce()
+    try:
+        decrypted_text = brtf.bruteforce_decrypt('encrypted_text_info.txt')
+        print(decrypted_text.decode('utf-8'))
+        string = decrypted_text.decode('utf-8')
+        with open('output.txt', 'w') as file:
+            file.write(string)
+    except ValueError as ve:
+        if str(ve) == "Limit too small to find p and q":
+            print("Specific error: Limit too small to find p and q", file=sys.stderr)
+            sys.exit(2)  
+        else:
+            print(f"ValueError: {ve}", file=sys.stderr)
+            sys.exit(1)  
+    except Exception as e:
+        print(f"General error: {e}", file=sys.stderr)
+        sys.exit(1) 

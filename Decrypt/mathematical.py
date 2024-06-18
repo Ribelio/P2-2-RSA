@@ -69,3 +69,6 @@ class Mathematical:
 math = Mathematical()
 decrypted_text = math.mathematical_decrypt('encrypted_text_info.txt')
 print(decrypted_text.decode('utf-8'))
+string = decrypted_text.decode('utf-8')
+with open('output.txt', 'w') as file:
+    file.write(string)

@@ -1,5 +1,3 @@
-
-
 # CSPRNG Flask API
 
 Instruction for our API documentation, this Flask API provides cryptographically secure pseudorandom number generation (CSPRNG) through a simple HTTP interface. The API generates random numbers using OS-specific CSPRNG mechanisms and can be easily extended or integrated into various applications. The project can also be run in Java with either `RSA\GUI.java` or `CSPRNG\RNGUI.java`.
@@ -52,3 +50,37 @@ To start the Flask API, simply run:
 
 ```bash
 python CSPRNG\\API_connection.py.py
+```
+
+# MAIN GUI Usage (RSA Encryption and Decryption)
+
+To get started, run the GUI.java file found under the RSA folder.
+
+## Encryption
+
+To encrypt, simply type in a message into the input box and click ENCRYPT. Then the resulting encoded message will appear in the output box. 
+
+## Decryption
+
+To decrypt, enter an encrypted message along with the public key and public exponent. Then choose one of the attack methods available using the radio buttons. Once done,
+click DECRYPT to receive the output. 
+
+## Testing the decryption 
+
+To confirm that a message is being correctly decrypted you can do the following:
+1. Go to the decrypt_rsa.py class found under the 'Decrypt' folder.
+2. Find message="text" at line (145) and replace it with any message.
+3. Run decrypt_rsa.py. This will overwrite the encrypted message, public key, and public exponent into the file "encrypted_text_info.txt" (found in the main project folder)
+4. Copy and paste this data into the decryption tab in the UI, choose "mathematical attack" and decrypt.
+
+Attempting to use the Bruteforce method will inform you that the public key is too long to attempt bruteforce decryption. Instead, the bruteforce can be tested as follows: 
+1. Navigate to Decrypt/decrypt_rsa.py
+2. Comment lines 91 - 113 (encrpyt/decrypt a message - good padding)
+3. Uncomment lines 115 - 129 (encrpyt/decrypt a message - worse padding)
+4. Change the key size at line 36 from 2048 to 600
+5. This will ensure that the encrypted message is much more likely to be decrypted in a feasible amount of time using the bruteforce algorithm
+6. Now you can go through the same steps as before (i.e. change the message at line 145, copy the information from the text file...)
+
+NOTE: Please use a VERY SHORT message to encrypt if you want to test the bruteforce decryption (even with the worse padding method, the key size of 600 can only carry enough info for a few characters of message length)
+
+NOTE: Encrypting a message through the UI's Encrypt tab DOES NOT overwrite "encrypted_text_info.txt". This means that the Encrypt tab does not provide public key and public exponent values. 

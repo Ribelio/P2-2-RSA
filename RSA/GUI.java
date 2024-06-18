@@ -1,3 +1,4 @@
+import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
@@ -20,8 +21,11 @@ import javax.swing.event.DocumentListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.awt.GridLayout;
@@ -37,6 +41,7 @@ public class GUI {
     private BigInteger public_key;
     private BigInteger public_exp;
     private String chosenAttackMode;
+    private JButton decryptButton;
 
     public GUI() {
         JFrame frame = new JFrame("RSA Encryption/Decryption");
@@ -139,8 +144,8 @@ public class GUI {
         instructions.setVerticalTextPosition(JLabel.TOP);
         instructions.setHorizontalTextPosition(JLabel.CENTER);
 
-        JButton button = new JButton("DECRYPT");
-        button.setFocusable(false);
+        decryptButton = new JButton("DECRYPT");
+        decryptButton.setFocusable(false);
 
         JTextField input = new JTextField("Encrypted Message");
         input.setPreferredSize(new Dimension(500, 20));
@@ -162,8 +167,8 @@ public class GUI {
 
             // This method will be called whenever the text changes
             private void textChanged() {
-                button.setText("DECRYPT");
-                button.setEnabled(true);
+                decryptButton.setText("DECRYPT");
+                decryptButton.setEnabled(true);
             }
         });
 
@@ -187,8 +192,8 @@ public class GUI {
 
             // This method will be called whenever the text changes
             private void textChanged() {
-                button.setText("DECRYPT");
-                button.setEnabled(true);
+                decryptButton.setText("DECRYPT");
+                decryptButton.setEnabled(true);
             }
         });
 
@@ -212,8 +217,8 @@ public class GUI {
 
             // This method will be called whenever the text changes
             private void textChanged() {
-                button.setText("DECRYPT");
-                button.setEnabled(true);
+                decryptButton.setText("DECRYPT");
+                decryptButton.setEnabled(true);
             }
         });
 
@@ -245,11 +250,10 @@ public class GUI {
         panel.add(input3);
         panel.add(radioButtonsPanel);   
         panel.add(output);
-        panel.add(button);
+        panel.add(decryptButton);
 
-        button.addActionListener(e -> {
-            button.setText("Done!");
-            button.setEnabled(false);
+        decryptButton.addActionListener(e -> {
+            decryptButton.setEnabled(false);
 
             message = input.getText();
             try {
@@ -287,6 +291,18 @@ public class GUI {
 
             pythonScriptDecrypt(fileName);
 
+            try (BufferedReader br = new BufferedReader(new FileReader("output.txt"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    output.setText(line);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            File outputFile = new File("output.txt");
+            outputFile.delete();
+
         });
     }
     
@@ -323,17 +339,19 @@ public class GUI {
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 System.out.println("Python script executed successfully");
-            } else {
+                decryptButton.setText("Done!");
+            } else if (exitCode == 2) {
                 System.out.println("Error executing Python script, exit code: " + exitCode);
+                decryptButton.setText("Public key is too large for bruteforce.");
             }
             
-            } catch(IOException e) {
-                System.out.println("Error reading from the error stream");
-                e.printStackTrace();
-            } catch(InterruptedException e) {
-                System.out.println("Error waiting for the process to finish");
-                e.printStackTrace();
-            }
+        } catch(IOException e) {
+            System.out.println("Error reading from the error stream");
+            e.printStackTrace();
+        } catch(InterruptedException e) {
+            System.out.println("Error waiting for the process to finish");
+            e.printStackTrace();
+        }
     }
 
 
