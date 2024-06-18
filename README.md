@@ -83,4 +83,6 @@ Attempting to use the Bruteforce method will inform you that the public key is t
 
 NOTE: Please use a VERY SHORT message to encrypt if you want to test the bruteforce decryption (even with the worse padding method, the key size of 600 can only carry enough info for a few characters of message length)
 
+NOTE: For the bruteforce, depending on what the limit is set to, the GUI might freeze for some time. E.g. if the limit is 100,000 the bruteforce will take a long time to search for the primes p and q. You can change this limit from Decrypt/bruteforce.py at line 27 for testing purposes.
+
 NOTE: Encrypting a message through the UI's Encrypt tab DOES NOT overwrite "encrypted_text_info.txt". This means that the Encrypt tab does not provide public key and public exponent values. 
