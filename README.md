@@ -77,11 +77,11 @@ Attempting to use the Bruteforce method will inform you that the public key is t
 1. Navigate to Decrypt/decrypt_rsa.py
 2. Comment lines 91 - 113 (encrpyt/decrypt a message - good padding)
 3. Uncomment lines 115 - 129 (encrpyt/decrypt a message - worse padding)
-4. Change the key size at line 36 from 2048 to 600
+4. Change the key size at line 36 from 2048 to 500
 5. This will ensure that the encrypted message is much more likely to be decrypted in a feasible amount of time using the bruteforce algorithm
 6. Now you can go through the same steps as before (i.e. change the message at line 145, copy the information from the text file...)
 
-NOTE: Please use a VERY SHORT message to encrypt if you want to test the bruteforce decryption (even with the worse padding method, the key size of 600 can only carry enough info for a few characters of message length)
+NOTE: Please use a SHORT message to encrypt if you want to test the bruteforce decryption (even with the worse padding method, the key size of 500 can only carry enough info for a few words/characters of message length)
 
 NOTE: For the bruteforce, depending on what the limit is set to, the GUI might freeze for some time. E.g. if the limit is 100,000 the bruteforce will take a long time to search for the primes p and q. You can change this limit from Decrypt/bruteforce.py at line 27 for testing purposes.
 
