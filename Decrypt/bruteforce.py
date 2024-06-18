@@ -1,15 +1,15 @@
 import itertools
-import sys
 from sympy import primefactors
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
 import base64
 import sympy
+import sys
 
 class Bruteforce:
     """
     This class is used for decryption attacks on RSA through bruteforcing.
-    The method attempts to find the prime numbers that make up the public key by going through every prime number. 
+    The method attempts to find the prime numbers that make up the public key by going through every prime number.
     """
 
     # Step 1: Read the encrypted message information like public key and exponent
@@ -22,15 +22,15 @@ class Bruteforce:
         e = int(lines[7].strip())
 
         return encrypted, n, e
-    
+
     # Step 2: Bruteforece attempt to find prime numbers p and q 
     def bruteforce_prime_factors(self, n, limit=1000000):
-            primes = list(sympy.primerange(2, limit))
-            for p, q in itertools.combinations(primes, 2):
-                if p * q == n:
-                    return p, q
-                else:
-                    raise ValueError("Limit too small to find p and q")
+        primes = list(sympy.primerange(2, limit))
+        for p, q in itertools.combinations(primes, 2):
+            if p * q == n:
+                return p, q
+        # Return None if the primes are not found within the limit
+        return None, None
 
     # Step 3: Derive the private key using p, q, and e (same process as in RSA class)
     def derive_private_key(self, p, q, e):
@@ -63,6 +63,8 @@ class Bruteforce:
     def bruteforce_decrypt(self, file):
         encrypted, n, e = self.read_encryption_txt(file)
         p, q = self.bruteforce_prime_factors(n)
+        if p is None or q is None:
+            raise ValueError("Limit too small to find p and q")
         private_key = self.derive_private_key(p, q, e)
         return self.decrypt_message(private_key, encrypted)
 

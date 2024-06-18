@@ -343,6 +343,8 @@ public class GUI {
             } else if (exitCode == 2) {
                 System.out.println("Error executing Python script, exit code: " + exitCode);
                 decryptButton.setText("Public key is too large for bruteforce.");
+            } else if (exitCode == 1) {
+                decryptButton.setText("Something went wrong. Verify that the public key is correct.");
             }
             
         } catch(IOException e) {
