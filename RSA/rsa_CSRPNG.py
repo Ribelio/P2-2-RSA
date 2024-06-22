@@ -1,5 +1,4 @@
 import base64
-from csprng import CSPRNG
 
 try:
     from cryptography.hazmat.primitives.asymmetric import padding
@@ -22,7 +21,7 @@ except ImportError as e:
 
 
 def generate_prime_candidate(length, random):
-    p = random.rand_int(2 ** (length - 1), 2 ** length - 1) # odd int
+    p = random.randint(2 ** (length - 1), 2 ** length - 1) # odd int
     return p | 1  # ensure int is odd
 
 
