@@ -234,14 +234,18 @@ public class GUI {
         bruteforceButton.setSelected(true);
         JRadioButton mathematicalButton = new JRadioButton("Mathematical Attack");
         mathematicalButton.setFocusable(false);
+        JRadioButton timingButton = new JRadioButton("Timing Attack");
+        timingButton.setFocusable(false);
 
         ButtonGroup group = new ButtonGroup();
         group.add(bruteforceButton);
         group.add(mathematicalButton);
+        group.add(timingButton);
    
         JPanel radioButtonsPanel = new JPanel();
         radioButtonsPanel.add(bruteforceButton);
         radioButtonsPanel.add(mathematicalButton);
+        radioButtonsPanel.add(timingButton);
 
         panel.setLayout(new GridLayout(7, 1));
         panel.add(instructions);
@@ -268,9 +272,9 @@ public class GUI {
             }
             if (bruteforceButton.isSelected() == true) {
                 chosenAttackMode = "bruteforce";
-            } else {
+            } else if (mathematicalButton.isSelected() == true) {
                 chosenAttackMode = "mathematical";
-            };
+            } else {chosenAttackMode = "timing";}
             
             String fileName = "encrypted_text_info.txt";
 
@@ -313,6 +317,8 @@ public class GUI {
             pythonScriptPath = "Decrypt/bruteforce.py";
         } else if (chosenAttackMode == "mathematical") {
             pythonScriptPath = "Decrypt/mathematical.py";
+        } else if (chosenAttackMode == "timing") {
+            pythonScriptPath = "Decrypt/timing.py";
         } else {pythonScriptPath = null;};
 
         ProcessBuilder processBuilder = new ProcessBuilder(
