@@ -5,12 +5,16 @@ from cryptography.hazmat.primitives import serialization, hashes
 import base64
 import sympy
 import sys
+from check_decryption import WordChecker 
 
 class Bruteforce:
     """
     This class is used for decryption attacks on RSA through bruteforcing.
     The method attempts to find the prime numbers that make up the public key by going through every prime number.
     """
+    
+    def __init__(self) -> None:
+        self.word_checker = WordChecker()
 
     # Step 1: Read the encrypted message information like public key and exponent
     def read_encryption_txt(self, file):
@@ -66,7 +70,14 @@ class Bruteforce:
         if p is None or q is None:
             raise ValueError("Limit too small to find p and q")
         private_key = self.derive_private_key(p, q, e)
-        return self.decrypt_message(private_key, encrypted)
+        plaintext = self.decrypt_message(private_key, encrypted)
+        tokens = self.word_checker.tokenize(plaintext)
+        correct_words = self.word_checker.count_correct_words(tokens)
+        ratio = correct_words / len(tokens)
+        print("The ratio of english words to total words is: " + str(ratio))
+        if ratio < 0.70:
+            raise ValueError("The decrypted text does not contain enough English words to be counted to have been decrypted")
+        return plaintext
 
 ##################################################################################################
 

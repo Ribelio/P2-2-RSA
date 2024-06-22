@@ -3,12 +3,16 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
 import base64
 import sympy
+from check_decryption import WordChecker
 
 class Mathematical:
     """
     This class is used for decryption attacks on RSA through the exploitation of the mathematics behind RSA.
     The method attempts to factorize the public key to find its prime numbers and construct the private key. 
     """
+    
+    def __init__(self) -> None:
+        self.word_checker = WordChecker()
 
     # Step 1: Read the encrypted message information like public key and exponent
     def read_encryption_txt(self, file):
@@ -62,7 +66,14 @@ class Mathematical:
         encrypted, n, e = self.read_encryption_txt(file)
         p, q = self.find_prime_factors(n)
         private_key = self.derive_private_key(p, q, e)
-        return self.decrypt_message(private_key, encrypted)
+        plaintext = self.decrypt_message(private_key, encrypted)
+        tokens = self.word_checker.tokenize(plaintext)
+        correct_words = self.word_checker.count_correct_words(tokens)
+        ratio = correct_words / len(tokens)
+        print("The ratio of english words to total words is: " + str(ratio))
+        if ratio < 0.70:
+            raise ValueError("The decrypted text does not contain enough English words to be counted to have been decrypted")
+        return plaintext
 
 ##################################################################################################
 
