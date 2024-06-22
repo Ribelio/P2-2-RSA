@@ -1,16 +1,7 @@
 import subprocess
-try:
-    import enchant
-except ModuleNotFoundError:
-    subprocess.check_call(['pip', 'install', 'pyenchant'])
-    import enchant
+import enchant
 
-try:
-    import nltk
-except ModuleNotFoundError:
-    subprocess.check_call(['pip', 'install', 'nltk'])
-    import nltk
-
+import nltk
 
 class WordChecker:
     def __init__(self) -> None:

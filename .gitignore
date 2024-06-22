@@ -4,3 +4,5 @@ output.bin
 array.csv
 input.txt
 system_info.txt
+*.pyc
+*.pem
