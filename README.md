@@ -47,7 +47,7 @@ python CSPRNG\\API_connection.py.py
 To get started, (as usual) install all the necessary libraries. In addition, install punkt by running the below code in your Python terminal:
 ```
 import nltk
-nltk.download('punkt)
+nltk.download('punkt')
 ```
 Next, run the GUI.java file found under the RSA folder. 
 
