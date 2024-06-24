@@ -172,7 +172,7 @@ public class GUI {
             }
         });
 
-        JTextField input2 = new JTextField("Public Key");
+        JTextField input2 = new JTextField("Public Key (n)");
         input2.setPreferredSize(new Dimension(500, 20));
         input2.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -197,7 +197,7 @@ public class GUI {
             }
         });
 
-        JTextField input3 = new JTextField("Public Exponent");
+        JTextField input3 = new JTextField("Public Exponent (e)");
         input3.setPreferredSize(new Dimension(500, 20));
         input3.getDocument().addDocumentListener(new DocumentListener() {
             @Override

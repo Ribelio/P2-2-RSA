@@ -66,7 +66,9 @@ class Mathematical:
         encrypted, n, e = self.read_encryption_txt(file)
         p, q = self.find_prime_factors(n)
         private_key = self.derive_private_key(p, q, e)
-        plaintext = self.decrypt_message(private_key, encrypted)
+        bytes_plaintext = self.decrypt_message(private_key, encrypted)
+        plaintext = bytes_plaintext.decode('utf-8')
+
         tokens = self.word_checker.tokenize(plaintext)
         correct_words = self.word_checker.count_correct_words(tokens)
         ratio = correct_words / len(tokens)
@@ -79,7 +81,6 @@ class Mathematical:
 
 math = Mathematical()
 decrypted_text = math.mathematical_decrypt('encrypted_text_info.txt')
-print(decrypted_text.decode('utf-8'))
-string = decrypted_text.decode('utf-8')
+print(decrypted_text)
 with open('output.txt', 'w') as file:
-    file.write(string)
+    file.write(decrypted_text)

@@ -18,7 +18,10 @@ class WordChecker:
                 count += 1
         return count
 
-word_checker = WordChecker()
-tokens = word_checker.tokenize("Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked. If Peter Piper picked a peck of pickled peppers, Where's the peck of pickled peppers Peter Piper picked?")
-correct_words = word_checker.count_correct_words(tokens)
-print("The ratio of english words to total words is: " + str(correct_words / len(tokens)))
+
+if __name__ == "__main__":
+    word_checker = WordChecker()
+    tokens = word_checker.tokenize("hello there")
+    correct_words = word_checker.count_correct_words(tokens)
+    print("The ratio of english words to total words is: " + str(correct_words / len(tokens)))
+    print(tokens)
