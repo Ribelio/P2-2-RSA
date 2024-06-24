@@ -4,7 +4,7 @@ from timing import Timing
 
 class Decrypt:
 
-    def __init__(self, method, file) -> None:
+    def __init__(self, method, file = 'encrypted_text_info.txt') -> None:
         self.method = method
         self.file = file
         self.math = Mathematical()
@@ -14,7 +14,7 @@ class Decrypt:
     def decrypt(self):
         if self.method == 'mathematical':
             decrypted_text = self.math.mathematical_decrypt(self.file)
-            return decrypted_text.decode('utf-8')
+            return decrypted_text
         elif self.method == 'bruteforce':
             decrypted_text = self.brtf.bruteforce_decrypt(self.file)
             return decrypted_text.decode('utf-8')
@@ -22,5 +22,5 @@ class Decrypt:
             decrypted_text = self.tmng.timing_decrypt(self.file)
             return decrypted_text.decode('utf-8')
         
-decrypter = Decrypt(method = 'bruteforce', file = 'encrypted_text_info.txt')
+decrypter = Decrypt(method = 'bruteforce')
 print(decrypter.decrypt())

@@ -79,8 +79,9 @@ class Mathematical:
 
 ##################################################################################################
 
-math = Mathematical()
-decrypted_text = math.mathematical_decrypt('encrypted_text_info.txt')
-print(decrypted_text)
-with open('output.txt', 'w') as file:
-    file.write(decrypted_text)
+if __name__ == "__main__":
+    math = Mathematical()
+    decrypted_text = math.mathematical_decrypt('encrypted_text_info.txt')
+    print(decrypted_text)
+    with open('output.txt', 'w') as file:
+        file.write(decrypted_text)

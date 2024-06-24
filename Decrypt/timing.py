@@ -4,18 +4,7 @@ import numpy as np
 import os
 import sys
 
-# Get the directory of the current script
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Navigate to the root directory (adjust the path as necessary)
-root_dir = os.path.dirname(current_dir)  # Adjust this line if the root is not the parent
-
-# Append the root directory to sys.path
-if root_dir not in sys.path:
-    sys.path.append(root_dir)
-
-# Now you can import modules from the root directory
-import RSA.rsa_CSPRNG as rsa
+import RSA.rsa_CSPRNG
 
 
 class Timing:
@@ -26,8 +15,8 @@ class Timing:
     # RSA key generation
     def generate_rsa_keys(self):
         key_size = 2048
-        p = rsa.generate_prime_number(key_size // 2, random)
-        q = rsa.generate_prime_number(key_size // 2, random)
+        p = rsa_CSPRNG.generate_prime_number(key_size // 2, random)
+        q = rsa_CSPRNG.generate_prime_number(key_size // 2, random)
 
         n = p * q
         phi = (p - 1) * (q - 1)
@@ -53,51 +42,51 @@ class Timing:
         decryption_time = end_time - start_time
         return m, decryption_time
 
+if __name__ == "__main__":
+    timing = Timing()
+    n, e, d = timing.generate_rsa_keys()
+    print("Generated RSA keys.")
+    print("n ", n, "\n", "e ", e, "\n", "d ", d)
 
-timing = Timing()
-n, e, d = timing.generate_rsa_keys()
-print("Generated RSA keys.")
-print("n ", n, "\n", "e ", e, "\n", "d ", d)
+    message = 42
+    ciphertext = pow(message, e, n)
 
-message = 42
-ciphertext = pow(message, e, n)
+    inferred_d = 0
+    max_rounds = 10
 
-inferred_d = 0
-max_rounds = 10
+    for round_number in range(max_rounds):
+        print(f"Round {round_number + 1}/{max_rounds}")
+        # collect timing data
+        num_samples = 1000
+        timing_data = []
 
-for round_number in range(max_rounds):
-    print(f"Round {round_number + 1}/{max_rounds}")
-    # collect timing data
-    num_samples = 1000
-    timing_data = []
+        for _ in range(num_samples):
+            _, decryption_time = timing.timing_decrypt(ciphertext, d, n)
+            timing_data.append(decryption_time)
 
-    for _ in range(num_samples):
-        _, decryption_time = timing.timing_decrypt(ciphertext, d, n)
-        timing_data.append(decryption_time)
+        print("Timing data collected.")
 
-    print("Timing data collected.")
+        # timing analysis to infer bits of d
+        timing_data = np.array(timing_data)
+        threshold = timing_data.mean()
 
-    # timing analysis to infer bits of d
-    timing_data = np.array(timing_data)
-    threshold = timing_data.mean()
+        inferred_d_bits = []
+        for bit_position in range(d.bit_length()):
+            print(f"Inferring bit {bit_position + 1}/{d.bit_length()}")
+            bit_timings = timing_data[bit_position::d.bit_length()]
+            if bit_timings.mean() > threshold:
+                inferred_d_bits.append('1')
+            else:
+                inferred_d_bits.append('0')
 
-    inferred_d_bits = []
-    for bit_position in range(d.bit_length()):
-        print(f"Inferring bit {bit_position + 1}/{d.bit_length()}")
-        bit_timings = timing_data[bit_position::d.bit_length()]
-        if bit_timings.mean() > threshold:
-            inferred_d_bits.append('1')
+        inferred_d = int(''.join(inferred_d_bits), 2)
+        print(f"Inferred d: {inferred_d}")
+        print(f"Actual d: {d}")
+        print(f"Correct: {inferred_d == d}")
+
+        if d == inferred_d:  # this is good as a test, but real world scenarios would make use of word detection
+            break
         else:
-            inferred_d_bits.append('0')
-
-    inferred_d = int(''.join(inferred_d_bits), 2)
-    print(f"Inferred d: {inferred_d}")
-    print(f"Actual d: {d}")
-    print(f"Correct: {inferred_d == d}")
-
-    if d == inferred_d:  # this is good as a test, but real world scenarios would make use of word detection
-        break
+            print("Incorrect inference, continuing to next round.")
     else:
-        print("Incorrect inference, continuing to next round.")
-else:
-    print("Failed to correctly infer the private key after maximum rounds.")
+        print("Failed to correctly infer the private key after maximum rounds.")
