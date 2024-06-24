@@ -1,7 +1,21 @@
 import time
 import random
 import numpy as np
-import RSA.rsa_CSRPNG as rsa
+import os
+import sys
+
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Navigate to the root directory (adjust the path as necessary)
+root_dir = os.path.dirname(current_dir)  # Adjust this line if the root is not the parent
+
+# Append the root directory to sys.path
+if root_dir not in sys.path:
+    sys.path.append(root_dir)
+
+# Now you can import modules from the root directory
+import RSA.rsa_CSPRNG as rsa
 
 
 class Timing:
@@ -52,13 +66,16 @@ inferred_d = 0
 max_rounds = 10
 
 for round_number in range(max_rounds):
+    print(f"Round {round_number + 1}/{max_rounds}")
     # collect timing data
     num_samples = 1000
     timing_data = []
 
     for _ in range(num_samples):
-        _, decryption_time = timing.rsa_decrypt_timing(ciphertext, d, n)
+        _, decryption_time = timing.timing_decrypt(ciphertext, d, n)
         timing_data.append(decryption_time)
+
+    print("Timing data collected.")
 
     # timing analysis to infer bits of d
     timing_data = np.array(timing_data)
@@ -66,6 +83,7 @@ for round_number in range(max_rounds):
 
     inferred_d_bits = []
     for bit_position in range(d.bit_length()):
+        print(f"Inferring bit {bit_position + 1}/{d.bit_length()}")
         bit_timings = timing_data[bit_position::d.bit_length()]
         if bit_timings.mean() > threshold:
             inferred_d_bits.append('1')
