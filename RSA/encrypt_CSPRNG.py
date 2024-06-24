@@ -1,6 +1,6 @@
 import base64
 from csprng import CSPRNG
-import RSA.rsa_CSPRNG as rsa_CSPRNG
+import rsa_CSPRNG as rsa_CSPRNG
 from pathlib import Path
 
 def encrypt_CSPRNG(message):
