@@ -1,3 +1,4 @@
+import base64
 from csprng import CSPRNG
 import rsa_CSRPNG
 from pathlib import Path
@@ -42,9 +43,20 @@ with open('input.txt', 'r') as file:
     ciphertext1 = rsa_CSRPNG.encrypt_message(publickey, message1)
     print(f'Ciphertext: {ciphertext1}')
 
+    ciphertext_base64 = base64.b64encode(ciphertext1).decode('utf-8')
+
     decrypted_message1 = rsa_CSRPNG.decrypt_message(privatekey, ciphertext1)
     print(f'Decrypted message: {decrypted_message1}')
     
     #Write the output to a file
-    with open('output.bin', 'wb') as f:
-        f.write(ciphertext1)
+    with open('output.txt', 'w') as f:
+        f.write(f"{ciphertext_base64}")
+
+    numbers = publickey.public_numbers()
+    n = numbers.n
+    e = numbers.e
+
+    with open('encrypted_text_info.txt', 'w') as file:
+        file.write(f"Encrypted Text (Base64):\n{ciphertext_base64}\n\n")
+        file.write(f"Public Key (n):\n{n}\n\n")
+        file.write(f"Public Exponent (e):\n{e}\n\n")

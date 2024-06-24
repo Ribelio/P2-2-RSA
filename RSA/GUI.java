@@ -45,7 +45,7 @@ public class GUI {
 
     public GUI() {
         JFrame frame = new JFrame("RSA Encryption/Decryption");
-        frame.setSize(600, 300);
+        frame.setSize(1000, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -127,11 +127,17 @@ public class GUI {
             button.setEnabled(false);
             String inpuString = input.getText();
             pythonScript(inpuString);
-            try {
-                byte[] bytes = Files.readAllBytes(Paths.get("output.bin"));
-                String outputString = new BigInteger(1, bytes).toString(16);
-                output.setText(outputString);
-            } catch (IOException e1) {}
+            try (BufferedReader br = new BufferedReader(new FileReader("output.txt"))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    output.setText(line);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            File outputFile = new File("output.txt");
+            outputFile.delete();
         });
     }
 
