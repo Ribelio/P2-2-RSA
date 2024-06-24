@@ -45,8 +45,6 @@ with open('input.txt', 'r') as file:
 
     ciphertext_base64 = base64.b64encode(ciphertext1).decode('utf-8')
 
-    ciphertext_base64 = base64.b64encode(ciphertext1).decode('utf-8')
-
     decrypted_message1 = rsa_CSPRNG.decrypt_message(privatekey, ciphertext1)
     print(f'Decrypted message: {decrypted_message1}')
     
