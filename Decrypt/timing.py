@@ -2,12 +2,9 @@ import base64
 import time
 import random
 import numpy as np
-import os
-import sys
-import RSA.rsa_CSPRNG as rsa_CSPRNG
+import rsa_CSPRNG
 import decrypt_rsa
 
-from cryptography.hazmat.primitives import padding, hashes
 from check_decryption import WordChecker
 
 
@@ -32,8 +29,8 @@ class Timing:
     # Step 2: Get an approximate of the private key (sophisticated techniques not possible)
     def generate_d_approx(self):
         key_size = 2048
-        p = rsa_CSPRNG.generate_prime_number(key_size // 2, random)
-        q = rsa_CSPRNG.generate_prime_number(key_size // 2, random)
+        p = generate_prime_number(key_size // 2, random)
+        q = generate_prime_number(key_size // 2, random)
 
         n = p * q
         phi = (p - 1) * (q - 1)
