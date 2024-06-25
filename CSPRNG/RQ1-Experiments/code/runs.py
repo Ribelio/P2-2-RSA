@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-path = 'RQ1-Experiments/data/win64_2.csv'
+path = 'array2.csv'
 data = pd.read_csv(path)
 
 # parameters that are adjusted

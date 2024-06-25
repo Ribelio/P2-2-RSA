@@ -10,7 +10,7 @@ from check_decryption import WordChecker
 
 class Timing:
     """
-    This class is used for decryption attacks on RSA through the use of timing. 
+    This class makes use of unique differences in timing when running the cryptographic algorithm. Through analysis of multiple queries, one can figure out the private key bit by bit
     """
     def __init__(self) -> None:
         self.word_checker = WordChecker()
@@ -43,14 +43,14 @@ class Timing:
     def derive_private_key(self, ciphertext, d, n):
         start_time = time.perf_counter()
 
-        # square-and-multiply method
+        # square-and-multiply method, determines "1" or "0" bit by bit
         m = 1
         for bit in bin(d)[2:]:
             m = (m * m) % n
             if bit == '1':
                 m = (m * ciphertext) % n
             # different timing based on bit value
-            time.sleep(0.00001 if bit == '1' else 0.000005)
+            time.sleep(0.00001 if bit == '1' else 0.000005) # not quite arbitrary parameters, but definitely susceptible to noise and very impoerfect
 
         end_time = time.perf_counter()
         decryption_time = end_time - start_time
@@ -72,6 +72,9 @@ class Timing:
             raise ValueError("The decrypted text does not contain enough English words to be counted to have been decrypted")
         return plaintext
 
+
+##################################################################################################
+# for testing purposes and creating the pseudo-brute-force mentioned in the report
 if __name__ == "__main__":
     timing = Timing()
     n, e, d = timing.generate_d_approx()

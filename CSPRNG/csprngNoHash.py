@@ -20,19 +20,6 @@ class CSPRNG_no_hash:
         # print(len(test))
         return test
 
-    def rand_bytes(self, n):
-        """
-        Generates random bytes
-        Args:
-            n: number of bytes
-        Returns: n random bytes
-        """
-        hmac = hashlib.sha256()
-        hmac.update(self.seed)
-        self.seed = hmac.digest()  # update the self.seed so that next number is different
-        return self.seed[:n]
-        # we truncate the seed here because sha256 makes hmac.digest() return 32 bytes and we might not always want that
-
     def rand_int(self, lower, upper):
         """
         Generates random integer
@@ -48,5 +35,5 @@ class CSPRNG_no_hash:
         return lower + (rand_int % range)
 
 
-csprng = CSPRNG(32)
+csprng = CSPRNG_no_hash(32)
 print(csprng.rand_int(0, 100))
