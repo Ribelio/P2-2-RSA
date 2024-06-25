@@ -74,15 +74,15 @@ class Mathematical:
         correct_words = self.word_checker.count_correct_words(tokens)
         ratio = correct_words / len(tokens)
         print("The ratio of english words to total words is: " + str(ratio))
-        if ratio < 0.70:
-            sys.exit(3)
-        return plaintext
+        return plaintext, ratio
 
 ##################################################################################################
 
 if __name__ == "__main__":
     math = Mathematical()
-    decrypted_text = math.mathematical_decrypt('encrypted_text_info.txt')
+    decrypted_text, ratio = math.mathematical_decrypt('encrypted_text_info.txt')
     print(decrypted_text)
     with open('output.txt', 'w') as file:
         file.write(decrypted_text)
+    if ratio < 0.70:
+        sys.exit(3)
