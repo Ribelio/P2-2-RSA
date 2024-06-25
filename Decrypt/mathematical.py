@@ -4,6 +4,7 @@ from cryptography.hazmat.primitives import serialization, hashes
 import base64
 import sympy
 from check_decryption import WordChecker
+import sys
 
 class Mathematical:
     """
@@ -74,7 +75,7 @@ class Mathematical:
         ratio = correct_words / len(tokens)
         print("The ratio of english words to total words is: " + str(ratio))
         if ratio < 0.70:
-            raise ValueError("The decrypted text does not contain enough English words to be counted to have been decrypted")
+            sys.exit(3)
         return plaintext
 
 ##################################################################################################

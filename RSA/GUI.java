@@ -357,6 +357,8 @@ public class GUI {
                 decryptButton.setText("Public key is too large for bruteforce.");
             } else if (exitCode == 1) {
                 decryptButton.setText("Something went wrong. Verify that the public key is correct.");
+            } else if (exitCode == 3) {
+                decryptButton.setText("Decrypted text does not contain enough English words. Did you type gibberish? 🤔🤔🤔");
             }
             
         } catch(IOException e) {
@@ -373,7 +375,6 @@ public class GUI {
         try {
             Files.write(Paths.get("input.txt"), inputString.getBytes());
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         String pythonScriptPath = "RSA/encrypt_CSPRNG.py";

@@ -142,7 +142,7 @@ def save_encryption_info(ciphertext, publickey):
         f.write(f"Public Key PEM:\n{publickey.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo).decode('utf-8')}\n")
 
 random = decrypt_csprng.CSPRNG(32)
-message = b"Hello there"
+message = b"The fog is coming"
 
 privatekey, publickey = generate_rsa_keypair(random)
 ciphertext = encrypt_message(publickey, message)
