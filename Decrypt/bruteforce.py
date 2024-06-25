@@ -31,6 +31,11 @@ class Bruteforce:
     # Step 2: Bruteforece attempt to find prime numbers p and q 
     def bruteforce_prime_factors(self, n, limit=100):
         primes = list(sympy.primerange(2, limit))
+        temp = primes
+        for prime in primes:
+            if prime > math.sqrt(n):
+                temp.pop()
+        primes = temp
         for p, q in itertools.combinations(primes, 2):
             if p * q == n:
                 return p, q
