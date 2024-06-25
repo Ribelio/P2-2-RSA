@@ -1,10 +1,13 @@
+import base64
 import time
 import random
 import numpy as np
 import os
 import sys
-
 import RSA.rsa_CSPRNG
+
+from cryptography.hazmat.primitives import padding, hashes
+from check_decryption import WordChecker
 
 
 class Timing:
@@ -12,8 +15,19 @@ class Timing:
     This class is used for decryption attacks on RSA through the use of timing. 
     """
 
-    # RSA key generation
-    def generate_rsa_keys(self):
+    # Step 1: Read the encrypted message information like public key and exponent
+    def read_encryption_txt(self, file):
+        with open(file, 'r') as f:
+            lines = f.readlines()
+
+        encrypted = base64.b64decode(lines[1].strip())
+        n = int(lines[4].strip())
+        e = int(lines[7].strip())
+
+        return encrypted, n, e
+
+    # Step 2: Get an approximate of the private key (sophisticated techniques not possible)
+    def generate_d_approx(self):
         key_size = 2048
         p = rsa_CSPRNG.generate_prime_number(key_size // 2, random)
         q = rsa_CSPRNG.generate_prime_number(key_size // 2, random)
@@ -25,8 +39,8 @@ class Timing:
 
         return n, e, d
 
-    # decryption with timing information
-    def timing_decrypt(self, ciphertext, d, n):
+    # Step 3: Decrypt with timing information
+    def derive_private_key(self, ciphertext, d, n):
         start_time = time.perf_counter()
 
         # square-and-multiply method
@@ -42,9 +56,37 @@ class Timing:
         decryption_time = end_time - start_time
         return m, decryption_time
 
+    # Step 4: Decrypt message using private key
+    def decrypt_message(self, private_key, ciphertext):
+        plaintext = private_key.decrypt(
+            ciphertext,
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            )
+        )
+        return plaintext
+
+    # Step 5: Combine all steps
+    def timing_decrypt(self, file):
+        encrypted, n, e = self.read_encryption_txt(file)
+        no1, no2, d = self.generate_d_approx()
+        private_key = self.derive_private_key(encrypted, d, n)
+        bytes_plaintext = self.decrypt_message(private_key, encrypted)
+        plaintext = bytes_plaintext.decode('utf-8')
+
+        tokens = self.word_checker.tokenize(plaintext)
+        correct_words = self.word_checker.count_correct_words(tokens)
+        ratio = correct_words / len(tokens)
+        print("The ratio of english words to total words is: " + str(ratio))
+        if ratio < 0.70:
+            raise ValueError("The decrypted text does not contain enough English words to be counted to have been decrypted")
+        return plaintext
+
 if __name__ == "__main__":
     timing = Timing()
-    n, e, d = timing.generate_rsa_keys()
+    n, e, d = timing.generate_d_approx()
     print("Generated RSA keys.")
     print("n ", n, "\n", "e ", e, "\n", "d ", d)
 
@@ -61,7 +103,7 @@ if __name__ == "__main__":
         timing_data = []
 
         for _ in range(num_samples):
-            _, decryption_time = timing.timing_decrypt(ciphertext, d, n)
+            _, decryption_time = timing.derive_private_key(ciphertext, d, n)
             timing_data.append(decryption_time)
 
         print("Timing data collected.")
