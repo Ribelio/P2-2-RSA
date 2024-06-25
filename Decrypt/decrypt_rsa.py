@@ -1,3 +1,5 @@
+import sys
+import time
 import decrypt_csprng as decrypt_csprng 
 import base64
 
@@ -143,11 +145,15 @@ def save_encryption_info(ciphertext, publickey):
 
 
 if __name__ == "__main__":
+    sys.set_int_max_str_digits(6000)
+    timer = time.time()
+    
     random = decrypt_csprng.CSPRNG(32)
     message = b"TFIC"
 
     privatekey, publickey = generate_rsa_keypair(random)
     ciphertext = encrypt_message(publickey, message)
+    print("--- %s seconds ---" % (time.time() - timer))
     save_keys_to_files(privatekey, publickey)
     save_encryption_info(ciphertext, publickey)
 

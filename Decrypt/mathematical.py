@@ -1,3 +1,4 @@
+import time
 from sympy import primefactors
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
@@ -79,8 +80,11 @@ class Mathematical:
 ##################################################################################################
 
 if __name__ == "__main__":
+    sys.set_int_max_str_digits(6000)
+    timer = time.time()
     math = Mathematical()
     decrypted_text, ratio = math.mathematical_decrypt('encrypted_text_info.txt')
+    print("--- %s seconds ---" % (time.time() - timer))
     print(decrypted_text)
     with open('output.txt', 'w') as file:
         file.write(decrypted_text)
