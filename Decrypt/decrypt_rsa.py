@@ -33,7 +33,7 @@ def generate_prime_number(length, random): # generate a prime number of `length`
     return p
 
 
-def generate_rsa_keypair(random, key_size=2048):
+def generate_rsa_keypair(random, key_size=128):
     p = generate_prime_number(key_size // 2, random)
     q = generate_prime_number(key_size // 2, random)
 
@@ -88,45 +88,45 @@ def load_keys_from_files():
         )
     return privatekey, publickey
 
-# encrypt a message (good padding)
-def encrypt_message(publickey, message1):
-    ciphertext1 = publickey.encrypt(
-        message1,
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None
-        )
-    )
-    return ciphertext1
-
-# decrypt a message (good padding)
-def decrypt_message(privatekey, ciphertext1):
-    plaintext = privatekey.decrypt(
-        ciphertext1,
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA256()),
-            algorithm=hashes.SHA256(),
-            label=None
-        )
-    )
-    return plaintext
-
-# # encrypt a message (worse padding - use for testing bruteforce, also change key_size above and reduce msg length)
+# # encrypt a message (good padding)
 # def encrypt_message(publickey, message1):
 #     ciphertext1 = publickey.encrypt(
 #         message1,
-#         padding.PKCS1v15()
+#         padding.OAEP(
+#             mgf=padding.MGF1(algorithm=hashes.SHA256()),
+#             algorithm=hashes.SHA256(),
+#             label=None
+#         )
 #     )
 #     return ciphertext1
 
-# # decrypt a message (worse padding - use for testing bruteforce, also change key_size above and reduce msg length)
+# # decrypt a message (good padding)
 # def decrypt_message(privatekey, ciphertext1):
 #     plaintext = privatekey.decrypt(
 #         ciphertext1,
-#         padding.PKCS1v15()
+#         padding.OAEP(
+#             mgf=padding.MGF1(algorithm=hashes.SHA256()),
+#             algorithm=hashes.SHA256(),
+#             label=None
+#         )
 #     )
 #     return plaintext
+
+# encrypt a message (worse padding - use for testing bruteforce, also change key_size above and reduce msg length)
+def encrypt_message(publickey, message1):
+    ciphertext1 = publickey.encrypt(
+        message1,
+        padding.PKCS1v15()
+    )
+    return ciphertext1
+
+# decrypt a message (worse padding - use for testing bruteforce, also change key_size above and reduce msg length)
+def decrypt_message(privatekey, ciphertext1):
+    plaintext = privatekey.decrypt(
+        ciphertext1,
+        padding.PKCS1v15()
+    )
+    return plaintext
 
 # save rsa information in a text file
 def save_encryption_info(ciphertext, publickey):
@@ -144,7 +144,7 @@ def save_encryption_info(ciphertext, publickey):
 
 if __name__ == "__main__":
     random = decrypt_csprng.CSPRNG(32)
-    message = b"The fog is coming"
+    message = b"TFIC"
 
     privatekey, publickey = generate_rsa_keypair(random)
     ciphertext = encrypt_message(publickey, message)

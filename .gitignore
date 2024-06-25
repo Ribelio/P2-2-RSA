@@ -6,3 +6,4 @@ input.txt
 system_info.txt
 *.pyc
 *.pem
+encrypted_text_info.txt

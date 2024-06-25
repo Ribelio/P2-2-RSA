@@ -7,6 +7,7 @@ import sympy
 import sys
 from check_decryption import WordChecker 
 import math
+import time
 
 class Bruteforce:
     """
@@ -29,7 +30,7 @@ class Bruteforce:
         return encrypted, n, e
 
     # Step 2: Bruteforece attempt to find prime numbers p and q 
-    def bruteforce_prime_factors(self, n, limit=100):
+    def bruteforce_prime_factors(self, n, limit):
         primes = list(sympy.primerange(2, limit))
         for p, q in itertools.combinations(primes, 2):
             if p * q == n:
@@ -65,9 +66,9 @@ class Bruteforce:
         return plaintext
 
     # Step 5: Combine all steps
-    def bruteforce_decrypt(self, file):
+    def bruteforce_decrypt(self, file, limit=1000):
         encrypted, n, e = self.read_encryption_txt(file)
-        p, q = self.bruteforce_prime_factors(n)
+        p, q = self.bruteforce_prime_factors(n, limit)
         if p is None or q is None:
             raise ValueError("Limit too small to find p and q")
         private_key = self.derive_private_key(p, q, e)
@@ -83,10 +84,16 @@ class Bruteforce:
 ##################################################################################################
 
 if __name__ == "__main__":
+    file = 'encrypted_text_info.txt'
     brtf = Bruteforce()
     try:
-        decrypted_text, ratio = brtf.bruteforce_decrypt('encrypted_text_info.txt')
+        start_time = time.time()
+        decrypted_text, ratio = brtf.bruteforce_decrypt(file,10**6)
         print(decrypted_text)
+        end_time = time.time()
+
+        execution_time = end_time - start_time
+        print("Execution time:", execution_time, "seconds")
         with open('output.txt', 'w') as file:
             file.write(decrypted_text)
         if ratio < 0.70:
