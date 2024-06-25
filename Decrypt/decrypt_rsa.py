@@ -141,14 +141,16 @@ def save_encryption_info(ciphertext, publickey):
         f.write(f"Public Exponent (e):\n{e}\n\n")
         f.write(f"Public Key PEM:\n{publickey.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo).decode('utf-8')}\n")
 
-random = decrypt_csprng.CSPRNG(32)
-message = b"The fog is coming"
 
-privatekey, publickey = generate_rsa_keypair(random)
-ciphertext = encrypt_message(publickey, message)
-save_keys_to_files(privatekey, publickey)
-save_encryption_info(ciphertext, publickey)
+if __name__ == "__main__":
+    random = decrypt_csprng.CSPRNG(32)
+    message = b"The fog is coming"
 
-loaded_privatekey, loaded_publickey = load_keys_from_files()
-plaintext = decrypt_message(loaded_privatekey, ciphertext)
-print(f"Decrypted message: {plaintext.decode('utf-8')}")
+    privatekey, publickey = generate_rsa_keypair(random)
+    ciphertext = encrypt_message(publickey, message)
+    save_keys_to_files(privatekey, publickey)
+    save_encryption_info(ciphertext, publickey)
+
+    loaded_privatekey, loaded_publickey = load_keys_from_files()
+    plaintext = decrypt_message(loaded_privatekey, ciphertext)
+    print(f"Decrypted message: {plaintext.decode('utf-8')}")
