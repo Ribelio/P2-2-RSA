@@ -1,3 +1,4 @@
+package EncryptDecrypt;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,21 +11,24 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-public class RNGUI_no_hash {
 
-    public RNGUI_no_hash() {
-        JFrame frame = new JFrame("TesterNoHash");
+public class RNGUI {
+
+    public RNGUI() {
+        JFrame frame = new JFrame("Tester");
         frame.setSize(600, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
         JPanel panel = new JPanel();
 
-        JLabel welcomeLabel = new JLabel("<html><div style='text-align: center;'>Welcome Nr. 2!</div></html>");
+        JLabel welcomeLabel = new JLabel("<html><div style='text-align: center;'>Welcome!</div></html>");
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 40));
 
-        JLabel instructions = new JLabel("<html><div style='text-align: center;'>Thank you for helping us test our program again. All you have to do is to click the \"Generate\" button below once more. This will create two more files. You can view these yourself if you wish.</div></html>");
+        JLabel instructions = new JLabel("<html><div style='text-align: center;'>Thank you for helping us test our program. All you have to do is to click the \"Generate\" button below. This will create two files. You can view these yourself if you wish.</div></html>");
         instructions.setFont(new Font("Arial", Font.PLAIN, 14));
         instructions.setPreferredSize(new Dimension(570, 50)); // Set preferred size
         instructions.setVerticalAlignment(JLabel.TOP);
@@ -39,26 +43,34 @@ public class RNGUI_no_hash {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    String pythonScriptPath = "CSPRNG/testerNoHash.py";
-                    ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath);
-                    Process process = processBuilder.start();
+                        String pythonScriptPath = "CSPRNG/tester.py";
+                        ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath);
+                        Process process = processBuilder.start();
 
-                    int exitCode = process.waitFor();
-                    if (exitCode == 0) {
-                        System.out.println("Python script executed successfully");
-                        button.setText("Done!");
-                        button.setEnabled(false);
-                    } else {
-                        System.out.println("Error executing Python script, exit code: " + exitCode);
-                    }
-                } catch(IOException | InterruptedException ex){
-                    ex.printStackTrace();
+                        // Capture error output
+                        BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                        String line;
+                        while ((line = errorReader.readLine()) != null) {
+                            System.out.println(line);
+                        }
+
+
+                        int exitCode = process.waitFor();
+                        if (exitCode == 0) {
+                            System.out.println("Python script executed successfully");
+                            button.setText("Done!");
+                            button.setEnabled(false);
+                        } else {
+                            System.out.println("Error executing Python script, exit code: " + exitCode);
+                        }
+                    } catch(IOException | InterruptedException ex){
+                        ex.printStackTrace();
                 }
             }
-
+            
         });
 
-        JLabel instructions2 = new JLabel("<html><div style='text-align: center;'>Once the files are created, please send them to us with the others. After that you may exit the program. Thank you!</div></html>");
+        JLabel instructions2 = new JLabel("<html><div style='text-align: center;'>Once the files are created, please send them to us. After that you may exit the program. Thank you!</div></html>");
         instructions2.setFont(new Font("Arial", Font.PLAIN, 14));
         instructions2.setPreferredSize(new Dimension(570, 50)); // Set preferred size
         instructions2.setVerticalAlignment(JLabel.TOP);
@@ -73,7 +85,7 @@ public class RNGUI_no_hash {
         note.setVerticalAlignment(JLabel.TOP);
         note.setHorizontalAlignment(JLabel.CENTER);
         note.setVerticalTextPosition(JLabel.TOP);
-        note.setHorizontalTextPosition(JLabel.CENTER);
+        note.setHorizontalTextPosition(JLabel.CENTER);        
 
         panel.add(welcomeLabel);
         panel.add(instructions);
@@ -85,6 +97,6 @@ public class RNGUI_no_hash {
     }
 
     public static void main(String[] args) {
-        new RNGUI_no_hash();
+        new RNGUI();
     }
 }

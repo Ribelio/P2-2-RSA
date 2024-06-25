@@ -1,3 +1,6 @@
+package EncryptDecrypt;
+
+
 import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -320,11 +323,11 @@ public class GUI {
     private void pythonScriptDecrypt(String file) {
         String pythonScriptPath;
         if (chosenAttackMode == "bruteforce") {
-            pythonScriptPath = "Decrypt/bruteforce.py";
+            pythonScriptPath = "EncryptDecrypt/bruteforce.py";
         } else if (chosenAttackMode == "mathematical") {
-            pythonScriptPath = "Decrypt/mathematical.py";
+            pythonScriptPath = "EncryptDecrypt/mathematical.py";
         } else if (chosenAttackMode == "timing") {
-            pythonScriptPath = "Decrypt/timing.py";
+            pythonScriptPath = "EncryptDecrypt/timing.py";
         } else {pythonScriptPath = null;};
 
         ProcessBuilder processBuilder = new ProcessBuilder(
@@ -377,7 +380,7 @@ public class GUI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String pythonScriptPath = "RSA/encrypt_CSPRNG.py";
+        String pythonScriptPath = "EncryptDecrypt/encrypt.py";
         ProcessBuilder processBuilder = new ProcessBuilder(
             "python", 
             pythonScriptPath);

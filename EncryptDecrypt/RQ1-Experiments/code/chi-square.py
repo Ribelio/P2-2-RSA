@@ -2,7 +2,7 @@ import pandas as pd
 from scipy.stats import chisquare
 import numpy as np
 
-path = 'RQ1-Experiments/data/win64_2.csv'
+path = 'EncryptDecrypt/RQ1-Experiments/data/win64_2.csv'
 data = pd.read_csv(path)
 
 # change this to change number of bins 

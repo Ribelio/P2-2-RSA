@@ -1,6 +1,6 @@
 # CSPRNG Flask API
 
-Instruction for our API documentation, this Flask API provides cryptographically secure pseudorandom number generation (CSPRNG) through a simple HTTP interface. The API generates random numbers using OS-specific CSPRNG mechanisms and can be easily extended or integrated into various applications. The project can also be run in Java with either `RSA\GUI.java` or `CSPRNG\RNGUI.java`.
+Instruction for our API documentation, this Flask API provides cryptographically secure pseudorandom number generation (CSPRNG) through a simple HTTP interface. The API generates random numbers using OS-specific CSPRNG mechanisms and can be easily extended or integrated into various applications. The project can also be run in Java with either `GUI.java` or `RNGUI.java`.
 
 ## Installation
 
@@ -39,7 +39,7 @@ Instruction for our API documentation, this Flask API provides cryptographically
 To start the Flask API, simply run:
 
 ```bash
-python CSPRNG\\API_connection.py.py
+python API_connection.py.py
 ```
 
 # MAIN GUI Usage (RSA Encryption and Decryption)
@@ -63,15 +63,15 @@ click DECRYPT to receive the output.
 ## Testing the decryption 
 
 To confirm that a message is being correctly decrypted you can do the following:
-1. Go to the decrypt_rsa.py class found under the 'Decrypt' folder.
+1. Go to the RSA.py class.
 2. Find message="text" at line (145) and replace it with any message.
-3. Run decrypt_rsa.py. This will overwrite the encrypted message, public key, and public exponent into the file "encrypted_text_info.txt" (found in the main project folder)
+3. Run RSA.py. This will overwrite the encrypted message, public key, and public exponent into the file "encrypted_text_info.txt" (found in the main project folder)
 4. Copy and paste this data into the decryption tab in the UI, choose "mathematical attack" and decrypt.
 
 **Alternatively, you can enter a text into the Encrypt tab of the GUI which will also update "encrypted_text_info.txt". You can then copy the output of the encryption directly from the GUI, or from the second line of the text file. They should be the exact same.**
 
 Attempting to use the Bruteforce method will inform you that the public key is too long for bruteforce decryption. Instead, the bruteforce can be tested as follows: 
-1. Navigate to Decrypt/decrypt_rsa.py
+1. Navigate to RSA.py
 2. Comment lines 91 - 113 (encrpyt/decrypt a message - good padding)
 3. Uncomment lines 115 - 129 (encrpyt/decrypt a message - worse padding)
 4. Change the key size at line 36 from 2048 to 500
@@ -80,4 +80,4 @@ Attempting to use the Bruteforce method will inform you that the public key is t
 
 **NOTE: Please use a SHORT message to encrypt if you want to test the bruteforce decryption (even with the worse padding method, the key size of 500 can only carry enough info for a few words/characters of message length)**
 
-**NOTE: For the bruteforce, depending on what the limit is set to, the GUI might freeze for some time. E.g. if the limit is 100,000 the bruteforce will take a long time to search for the primes p and q. You can change this limit from Decrypt/bruteforce.py at line 27 for testing purposes.**
+**NOTE: For the bruteforce, depending on what the limit is set to, the GUI might freeze for some time. E.g. if the limit is 100,000 the bruteforce will take a long time to search for the primes p and q. You can change this limit from bruteforce.py at line 27 for testing purposes.**

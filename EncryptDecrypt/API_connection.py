@@ -1,5 +1,6 @@
 import json
 import subprocess
+import pandas as pd
 
 try:
     from flask import Flask, jsonify
@@ -7,13 +8,13 @@ except ImportError:
     subprocess.check_call(["pip", "install", "flask"])
     from flask import Flask, jsonify
 
-from csprng import CSPRNG
+import csprng
 import tester
 
 app = Flask(__name__)
 
 # Create an instance of your class
-rng = CSPRNG(32)
+rng = csprng.CSPRNG(32)
 
 # Define a route that calls the class method
 @app.route('/random', methods=['GET'])

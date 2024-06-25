@@ -3,7 +3,7 @@ import time
 import random
 import numpy as np
 import rsa_CSPRNG
-import decrypt_rsa
+import RSA
 
 from check_decryption import WordChecker
 
@@ -61,7 +61,7 @@ class Timing:
         encrypted, n, e = self.read_encryption_txt(file)
         no1, no2, d = self.generate_d_approx()
         private_key = self.derive_private_key(encrypted, d, n)
-        bytes_plaintext = decrypt_rsa.decrypt_message(private_key, encrypted)
+        bytes_plaintext = RSA.decrypt_message(private_key, encrypted)
         plaintext = bytes_plaintext.decode('utf-8')
 
         tokens = self.word_checker.tokenize(plaintext)

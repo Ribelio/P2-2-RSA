@@ -1,6 +1,6 @@
 import sys
 import time
-import decrypt_csprng as decrypt_csprng 
+import csprng as csprng 
 import base64
 
 try:
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     sys.set_int_max_str_digits(6000)
     timer = time.time()
     
-    random = decrypt_csprng.CSPRNG(32)
+    random = csprng.CSPRNG(32)
     message = b"The fog is coming"
 
     privatekey, publickey = generate_rsa_keypair(random)
