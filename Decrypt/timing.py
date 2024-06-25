@@ -4,7 +4,8 @@ import random
 import numpy as np
 import os
 import sys
-import RSA.rsa_CSPRNG
+import RSA.rsa_CSPRNG as rsa_CSPRNG
+import decrypt_rsa
 
 from cryptography.hazmat.primitives import padding, hashes
 from check_decryption import WordChecker
@@ -14,6 +15,8 @@ class Timing:
     """
     This class is used for decryption attacks on RSA through the use of timing. 
     """
+    def __init__(self) -> None:
+        self.word_checker = WordChecker()
 
     # Step 1: Read the encrypted message information like public key and exponent
     def read_encryption_txt(self, file):
@@ -56,24 +59,12 @@ class Timing:
         decryption_time = end_time - start_time
         return m, decryption_time
 
-    # Step 4: Decrypt message using private key
-    def decrypt_message(self, private_key, ciphertext):
-        plaintext = private_key.decrypt(
-            ciphertext,
-            padding.OAEP(
-                mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                algorithm=hashes.SHA256(),
-                label=None
-            )
-        )
-        return plaintext
-
-    # Step 5: Combine all steps
+    # Step 4: Combine all steps
     def timing_decrypt(self, file):
         encrypted, n, e = self.read_encryption_txt(file)
         no1, no2, d = self.generate_d_approx()
         private_key = self.derive_private_key(encrypted, d, n)
-        bytes_plaintext = self.decrypt_message(private_key, encrypted)
+        bytes_plaintext = decrypt_rsa.decrypt_message(private_key, encrypted)
         plaintext = bytes_plaintext.decode('utf-8')
 
         tokens = self.word_checker.tokenize(plaintext)
